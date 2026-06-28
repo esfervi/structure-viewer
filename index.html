@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+<style>
+html, body {
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+#topbar{
+    position:absolute;
+    top:10px;
+    left:10px;
+    right:10px;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    gap:12px;
+    z-index:1000;
+	flex-wrap:wrap;
+    font-family:Arial, sans-serif;
+}
+button{
+    padding:8px 12px;
+    border:none;
+    border-radius:6px;
+    background:white;
+    cursor:pointer;
+    font-size:14px;
+}
+#legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 14px;
+    align-items:center;
+	flex:1;
+	min-width:0;
+}
+.legend-item{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:14px;
+    background:rgba(255,255,255,0.8);
+    padding:4px 6px;
+    border-radius:6px;
+}
+.color-dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    display:inline-block;
+	border:1px solid #444;
+}
+.load-btn.green{
+    border:3px solid #AADA76;
+}
+
+.load-btn.blue{
+    border:3px solid #338DCD;
+}
+#viewer{
+    width:100vw;
+    height:100vh;
+}
+</style>
+</head>
+
+<body>
+<div id="topbar">
+	<button class="load-btn green" onclick="load('PdAtom.cif')">Pd Atom</button>
+	<button class="load-btn blue" onclick="load('PdDimer.cif')">Pd Dimer</button>
+    <div id="legend"></div>
+</div>
+<div id="viewer"></div>
+<script>
+let rotated = false;
+let viewer = $3Dmol.createViewer("viewer");
+function load(file){
+	viewer.clear();
+	fetch(file + "?v=" + Date.now())
+		.then(r => r.text())
+		.then(data => {
+			viewer.addModel(data,"cif");
+			viewer.setStyle({}, {sphere:{scale:0.5},stick:{radius:0.2}});
+			viewer.setBackgroundColor("white");
+			viewer.setStyle({elem: "Pd"}, {
+				sphere: { scale:0.5, color: "blue"}, stick:{radius:0.2, color:"blue"}
+			});
+			viewer.setStyle({elem: "O"}, {
+				sphere: { scale:0.55, color: "red"}, stick:{radius:0.2, color:"red"}
+			});
+			viewer.setStyle({elem: "Ce"}, {
+				sphere: { color: "white" }
+			});
+			viewer.setStyle({elem: "La"}, {
+				sphere: { color: "grey" }
+			});
+			viewer.setStyle({elem: "S"}, {
+				sphere: { scale:0.5, color: "pink" }
+			});
+			viewer.addUnitCell();
+			viewer.zoomTo();
+			if(!rotated){viewer.rotate(-90,"x"); rotated = true;}
+			viewer.render();
+		});
+}
+
+let legendData = [];
+legendData.push({label: "Pd",color: "blue"});
+legendData.push({label: "Au",color: "gold"});
+legendData.push({label: "Ce<sup>4+</sup>",color: "white"}); 
+legendData.push({label: "Ce<sup>3+</sup>",color: "grey"});
+/*legendData.push({label: "Ce",color: "white"}) */
+legendData.push({label: "O",color: "red"});
+let legend = document.getElementById("legend");
+legendData.forEach(entry => {
+    let item = document.createElement("div");
+    item.className = "legend-item";
+    let dot = document.createElement("span");
+    dot.className = "color-dot";
+    dot.style.background = entry.color;
+    let label = document.createElement("span");
+    label.innerHTML = entry.label;
+    item.appendChild(dot);
+    item.appendChild(label);
+    legend.appendChild(item);
+});
+  
+</script>
+</body>
+</html>
