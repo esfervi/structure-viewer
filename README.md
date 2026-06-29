@@ -6,3 +6,9 @@ The viewer is implemented with 3Dmol.js and was created for convenient inspectio
 
 ## Access viewer
 https://esfervi.github.io/structure-viewer/
+
+___
+#### Citation
+If this tool is used or adapted, please acknowledge the associated publication and repository:
+- Associated publication DOI: https://doi.org/10.1002/anie.202505716
+- Original implementation: https://github.com/esfervi/structure-viewer/
