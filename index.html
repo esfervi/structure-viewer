@@ -10,7 +10,6 @@ html, body {
     height:100%;
     overflow:hidden;
 	border:10px solid red;
-	font-size:40px;
 }
 #topbar{
     position:absolute;
@@ -68,9 +67,9 @@ button{
     width:100vw;
     height:100vh;
 }
-@media (max-width:2000px){
+@media (pointer: coarse){
     button{
-        font-size:18px;
+        font-size:20px;
         padding:12px 18px;
     }
     .legend-item{
@@ -79,10 +78,6 @@ button{
     .color-dot{
         width:18px;
         height:18px;
-    }
-	body{
-        border:10px solid green;
-		font-size:10px;
     }
 }
 </style>
@@ -133,7 +128,8 @@ legendData.push({label: "Au",color: "gold"});
 legendData.push({label: "Ce<sup>4+</sup>",color: "white"}); 
 legendData.push({label: "Ce<sup>3+</sup>",color: "grey"});
 /*legendData.push({label: "Ce",color: "white"}) */
-legendData.push({label: "O",color: "red"});
+legendData.push({label: "O<sub>surf</sub>",color: "red"});
+legendData.push({label: "O<sub>sub</sub>",color: "pink"});
 let legend = document.getElementById("legend");
 legendData.forEach(entry => {
     let item = document.createElement("div");
